@@ -1,1 +1,1 @@
-include ':app', ':anylyzelib'
+include ':app', ':analyzelib'
