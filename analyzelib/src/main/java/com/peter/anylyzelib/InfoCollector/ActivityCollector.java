@@ -3,6 +3,7 @@ package com.peter.anylyzelib.InfoCollector;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -10,52 +11,74 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SearchEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 
+import java.util.Stack;
+
 public class ActivityCollector implements Application.ActivityLifecycleCallbacks {
+
+    private Application application;
+    private Stack<Activity> activityStack = new Stack<>();
+
+    public ActivityCollector(Application application) {
+        this.application = application;
+        application.registerActivityLifecycleCallbacks(this);
+    }
+
     @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+    public void onActivityCreated(final Activity activity, Bundle savedInstanceState) {
+        activityStack.push(activity);
+        final Window.Callback callback = activity.getWindow().getCallback();
+
         activity.getWindow().setCallback(new Window.Callback() {
             @Override
             public boolean dispatchKeyEvent(KeyEvent event) {
-                return false;
+                return callback.dispatchKeyEvent(event);
             }
 
             @Override
             public boolean dispatchKeyShortcutEvent(KeyEvent event) {
-                return false;
+
+                return callback.dispatchKeyShortcutEvent(event);
             }
 
             @Override
             public boolean dispatchTouchEvent(MotionEvent event) {
-                return false;
+//                activity.getWindow().getCurrentFocus()
+//                ViewGroup group = (ViewGroup) activity.getWindow().getDecorView().getRootView();
+//                View view = ViewIdentifier.getViewByCoordinate((int) event.getRawX(), (int)event.getRawY(), group);
+//                if(view != null){
+//                    Log.d("peterTest", "View id is " + ViewIdentifier.getViewId(view));
+//                }
+                return callback.dispatchTouchEvent(event);
             }
 
             @Override
             public boolean dispatchTrackballEvent(MotionEvent event) {
-                return false;
+                return callback.dispatchTrackballEvent(event);
             }
 
             @Override
             public boolean dispatchGenericMotionEvent(MotionEvent event) {
-                return false;
+                return callback.dispatchGenericMotionEvent(event);
             }
 
             @Override
             public boolean dispatchPopulateAccessibilityEvent(AccessibilityEvent event) {
-                return false;
+                return callback.dispatchPopulateAccessibilityEvent(event);
             }
 
             @Override
             public View onCreatePanelView(int featureId) {
-                return null;
+                return callback.onCreatePanelView(featureId);
             }
 
             @Override
             public boolean onCreatePanelMenu(int featureId, Menu menu) {
-                return false;
+                return callback.onCreatePanelMenu(featureId, menu);
             }
 
             @Override
@@ -65,12 +88,12 @@ public class ActivityCollector implements Application.ActivityLifecycleCallbacks
 
             @Override
             public boolean onMenuOpened(int featureId, Menu menu) {
-                return false;
+                return onMenuOpened(featureId, menu);
             }
 
             @Override
             public boolean onMenuItemSelected(int featureId, MenuItem item) {
-                return false;
+                return onMenuItemSelected(featureId, item);
             }
 
             @Override
@@ -105,12 +128,12 @@ public class ActivityCollector implements Application.ActivityLifecycleCallbacks
 
             @Override
             public boolean onSearchRequested() {
-                return false;
+                return callback.onSearchRequested();
             }
 
             @Override
             public boolean onSearchRequested(SearchEvent searchEvent) {
-                return false;
+                return callback.onSearchRequested(searchEvent);
             }
 
             @Override
@@ -133,6 +156,7 @@ public class ActivityCollector implements Application.ActivityLifecycleCallbacks
 
             }
         });
+        Log.d("peterTest", "activityName : " + activity.getLocalClassName());
     }
 
     @Override
@@ -162,6 +186,6 @@ public class ActivityCollector implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-
+        activityStack.pop();
     }
 }

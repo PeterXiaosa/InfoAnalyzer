@@ -38,4 +38,18 @@ public class ViewIdentifier {
         }
         return builder.toString();
     }
+
+    public static View getViewByCoordinate(int x, int y, View view){
+        if (view instanceof ViewGroup){
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++){
+                return getViewByCoordinate(x, y , ((ViewGroup) view).getChildAt(i));
+            }
+            return view;
+        }else {
+            if (x > view.getLeft() && x < view.getRight() && y > view.getTop() && y < view.getBottom()) {
+                return view;
+            }
+        }
+        return null;
+    }
 }

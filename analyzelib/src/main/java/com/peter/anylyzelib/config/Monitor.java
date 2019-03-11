@@ -1,16 +1,21 @@
-package com.peter.anylyzelib;
+package com.peter.anylyzelib.config;
 
+import android.app.Activity;
 import android.app.Application;
+import android.os.Bundle;
+import android.util.Log;
 
-import com.peter.anylyzelib.config.MonitorConfig;
+import com.peter.anylyzelib.InfoCollector.ActivityCollector;
 
 public class Monitor {
     private MonitorConfig mConfig;
     private static volatile Monitor sInstance;
+    private ActivityCollector mActivityControler;
 
     private Monitor(MonitorConfig config){
         this.mConfig = config;
         checkConfig();
+        init();
     }
 
     public static Monitor install(MonitorConfig config){
@@ -29,7 +34,11 @@ public class Monitor {
         return sInstance;
     }
 
-    private void checkConfig(){
+    private boolean checkConfig(){
+        return false;
+    }
 
+    private void init() {
+        mActivityControler = new ActivityCollector(mConfig.application);
     }
 }

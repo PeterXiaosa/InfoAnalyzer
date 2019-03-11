@@ -1,5 +1,6 @@
 package com.peter.anylyzelib.config;
 
+import android.app.Application;
 import android.content.Context;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 public class MonitorConfig {
 
     List<String> mCustomAttributeList = new ArrayList<>();
-    Context mContext;
+    Application application;
 
     private MonitorConfig(){
 
@@ -16,10 +17,10 @@ public class MonitorConfig {
 
     public static class Builder{
         List<String> mCustomAttributeList = new ArrayList<>();
-        Context mContext;
+        Application application;
 
-        public Builder(Context context){
-            this.mContext = context;
+        public Builder(Application application){
+            this.application = application;
         }
 
         public Builder setCustomAttribute(String attribute){
@@ -31,7 +32,7 @@ public class MonitorConfig {
 
         void applyConfig(MonitorConfig config){
             config.mCustomAttributeList = this.mCustomAttributeList;
-            config.mContext = this.mContext;
+            config.application = this.application;
         }
 
         public MonitorConfig create(){
