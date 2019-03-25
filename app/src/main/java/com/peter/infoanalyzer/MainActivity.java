@@ -2,6 +2,7 @@ package com.peter.infoanalyzer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -14,8 +15,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.peter.anylyzelib.InfoCollector.ViewIdentifier;
+import com.peter.anylyzelib.TaskController.ThreadPoolConfig;
 import com.peter.anylyzelib.TaskController.ThreadPoolManager;
 
 import java.util.LinkedList;
@@ -34,19 +37,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_go = findViewById(R.id.btn_go);
         layout = findViewById(R.id.layout);
         btn_go.setOnClickListener(this);
-//        btn_go.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this, SecondActivity.class));
-//            }
-//        });
 
+        ThreadPoolConfig config = new ThreadPoolConfig.Builder(this)
+                .create();
+        ThreadPoolManager.getInstance().install(config);
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == btn_go.getId()){
-            startActivity(new Intent(MainActivity.this, SecondActivity.class));
+            Log.d("peterTest", "onClick() Current Thread is "
+                    + Thread.currentThread().getId());
+//            startActivity(new Intent(MainActivity.this, SecondActivity.class));
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    Log.d("peterTest", "inner() Current Thread is "
+                            + Thread.currentThread().getId());
+                }
+            };
+            ThreadPoolManager.getInstance().execute(runnable, 1L,
+                    new ThreadPoolManager.AsyncHandler() {
+                        @Override
+                        public void onFinished() {
+                            Toast.makeText(getApplicationContext(),
+                                    "在主线程中，id 为 " + Thread.currentThread().getId(),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
 
