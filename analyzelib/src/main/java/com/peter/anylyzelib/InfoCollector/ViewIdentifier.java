@@ -15,6 +15,7 @@ public class ViewIdentifier {
             do {
                 String viewType = view.getClass().getSimpleName();
                 int index = 0;
+                // 从ContentView节点开始较好，由于ROM不同，DecorView到ContentView路径可能不一致。
                 if ("DecorView".equals(viewType)){
                     builder.insert(0, "DecorView");
                     break;
@@ -39,17 +40,51 @@ public class ViewIdentifier {
         return builder.toString();
     }
 
-    public static View getViewByCoordinate(int x, int y, View view){
-        if (view instanceof ViewGroup){
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++){
-                return getViewByCoordinate(x, y , ((ViewGroup) view).getChildAt(i));
-            }
-            return view;
-        }else {
-            if (x > view.getLeft() && x < view.getRight() && y > view.getTop() && y < view.getBottom()) {
-                return view;
+    /**
+     * 根据触摸指标，计算点击View
+     * @param x
+     * @param y
+     * @param contentView
+     * @return
+     */
+    public static View getViewByCoordinate(int x, int y, ViewGroup contentView){
+        // 传进来的View为ContentView
+        View result = contentView;
+        ViewGroup innerGroup = contentView;
+        for (int index = 0; index < innerGroup.getChildCount(); index++){
+            View child = innerGroup.getChildAt(index);
+            if (child instanceof ViewGroup){
+                innerGroup = (ViewGroup) child;
+                Object
+                return getViewByCoordinate(x - child.getLeft(), y - child.getTop(), innerGroup);
+            }else {
+                if (x > child.getLeft() && x < child.getRight() && y > child.getTop() && y < child.getBottom()){
+                    result = child;
+                    break;
+                }
             }
         }
-        return null;
+        return result;
+
+//        if (view instanceof ViewGroup){
+//            if (((ViewGroup) view).getChildCount() == 0){
+//                // 点击的ViewGroup没有子View。
+//            }
+//
+//            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++){
+//                View child = getViewByCoordinate(x, y , ((ViewGroup) view).getChildAt(i));
+//                if (child == null){
+//                    continue;
+//                }
+//                return child;
+//            }
+//            return view;
+//        }else {
+//            if (x > view.getLeft() && x < view.getRight() && y > view.getTop() && y < view.getBottom()) {
+//                //此时的View应该为点击的View
+//                return view;
+//            }
+//        }
+//        return null ;
     }
 }

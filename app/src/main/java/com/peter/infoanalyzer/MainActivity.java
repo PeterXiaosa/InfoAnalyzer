@@ -46,34 +46,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == btn_go.getId()){
-            Log.d("peterTest", "onClick() Current Thread is "
-                    + Thread.currentThread().getId());
-//            startActivity(new Intent(MainActivity.this, SecondActivity.class));
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    Log.d("peterTest", "inner() Current Thread is "
-                            + Thread.currentThread().getId());
-                }
-            };
-            ThreadPoolManager.getInstance().execute(runnable, 1L,
-                    new ThreadPoolManager.AsyncHandler() {
-                        @Override
-                        public void onFinished() {
-                            Toast.makeText(getApplicationContext(),
-                                    "在主线程中，id 为 " + Thread.currentThread().getId(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
+
         }
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        ViewGroup group = layout;
-        View view = ViewIdentifier.getViewByCoordinate((int) event.getRawX(), (int)event.getRawY(), group);
-        if(view != null){
-            Log.d("peterTest", "View id is " + ViewIdentifier.getViewId(view));
+        View group = getWindow().getDecorView().findViewById(android.R.id.content);
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View view = ViewIdentifier.getViewByCoordinate((int) event.getRawX(), (int) event.getRawY(), group);
+            if (view != null) {
+                Log.d("peterTest", "View id is " + ViewIdentifier.getViewId(view));
+            }
         }
         return super.dispatchTouchEvent(event);
     }
