@@ -52,13 +52,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        View group = getWindow().getDecorView().findViewById(android.R.id.content);
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            View view = ViewIdentifier.getViewByCoordinate((int) event.getRawX(), (int) event.getRawY(), group);
-            if (view != null) {
-                Log.d("peterTest", "View id is " + ViewIdentifier.getViewId(view));
-            }
-        }
+//        View group = getWindow().getDecorView().findViewById(android.R.id.content);
+//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//            View view = ViewIdentifier.getViewByCoordinate((int) event.getRawX(), (int) event.getRawY(), group);
+//            if (view != null) {
+//                Log.d("peterTest", "View id is " + ViewIdentifier.getViewId(view));
+//            }
+//        }
         return super.dispatchTouchEvent(event);
     }
 }

@@ -4,6 +4,11 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.peter.anylyzelib.bean.ServerBean;
+import com.peter.anylyzelib.retrofit.AtomApi;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -22,5 +27,16 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("com.peter.anylyzelib.test", appContext.getPackageName());
+    }
+
+    @Test
+    public void testHttp(){
+        JsonObject jsonObject = new JsonObject();
+
+        jsonObject.addProperty("content", "test message");
+        jsonObject.addProperty("msg", "0");
+        jsonObject.addProperty("status", 0);
+        System.out.println(jsonObject.toString());
+//        AtomApi.recordPage(jsonObject);
     }
 }

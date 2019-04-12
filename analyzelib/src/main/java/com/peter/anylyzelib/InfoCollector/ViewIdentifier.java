@@ -55,7 +55,6 @@ public class ViewIdentifier {
             View child = innerGroup.getChildAt(index);
             if (child instanceof ViewGroup){
                 innerGroup = (ViewGroup) child;
-                Object
                 return getViewByCoordinate(x - child.getLeft(), y - child.getTop(), innerGroup);
             }else {
                 if (x > child.getLeft() && x < child.getRight() && y > child.getTop() && y < child.getBottom()){
