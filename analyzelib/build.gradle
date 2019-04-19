@@ -1,9 +1,22 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'//添加
+//apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'com.jfrog.bintray'
+
+publish {
+    artifactId = 'InfoAnalyze'
+    publishVersion = '1.0.0'
+    userOrg = 'peterxiaosa'
+    repoName = "maven"
+    groupId = 'com.peterxiaosa'
+    desc = 'useful tool for android'
+    website = 'https://github.com/davyjoneswang/AndroidCommonUtils'
+    licences = ['Apache-2.0']
+}
+
 
 android {
     compileSdkVersion 28
-
-
 
     defaultConfig {
         minSdkVersion 24
@@ -17,8 +30,15 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            //混淆
+            minifyEnabled true
+            multiDexEnabled true
+            //对齐
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+//            jniDebuggable true
         }
     }
 
@@ -45,3 +65,6 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     implementation 'com.google.code.gson:gson:2.8.4'
 }
+//50d40e726afa5700bb0a10df8fafda41c22e58c0
+//添加
+

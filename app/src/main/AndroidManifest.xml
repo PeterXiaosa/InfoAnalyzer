@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.peter.infoanalyzer">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".AppContext"
         android:allowBackup="true"

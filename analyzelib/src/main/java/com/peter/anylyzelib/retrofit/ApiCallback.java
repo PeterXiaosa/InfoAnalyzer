@@ -4,7 +4,7 @@ import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
 import io.reactivex.observers.DisposableObserver;
 
-abstract class ApiCallback<T> extends DisposableObserver<T> {
+public abstract class ApiCallback<T> extends DisposableObserver<T> {
 
     public abstract void onSuccess(T model);
 

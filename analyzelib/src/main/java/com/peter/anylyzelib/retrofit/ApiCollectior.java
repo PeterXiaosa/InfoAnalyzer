@@ -1,4 +1,4 @@
-package com.peter.anylyzelib.InfoCollector;
+package com.peter.anylyzelib.retrofit;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -18,8 +18,7 @@ import okhttp3.RequestBody;
  * @author Peter
  * 收集API调用情况。
  */
-public class ApiConllectior {
-
+public class ApiCollectior {
     /**
      * 上传事件函数，事件可分为以下操作类型：
      *  1.下单操作
@@ -32,5 +31,11 @@ public class ApiConllectior {
         Gson gson = new Gson();
         JsonObject jsonObject = gson.fromJson(gson.toJson(object), JsonObject.class);
         AtomApi.recordPage(jsonObject, disposableObserver);
+    }
+
+    public static void recordOrder(Object object, DisposableObserver disposableObserver){
+        Gson gson = new Gson();
+        JsonObject jsonObject = gson.fromJson(gson.toJson(object), JsonObject.class);
+        AtomApi.recordOrder(jsonObject, disposableObserver);
     }
 }
